@@ -1,0 +1,156 @@
+openapi: 3.0.0
+info:
+  title: Demo Project with Swagger
+  description: This is a practice project to learn swagger for our Smart CBT project.
+  version: 0.0.1
+  contact:
+    email: shiam.chowdhury@bjitgroup.com
+
+servers:
+  - url: http://localhost:4001/
+    description: Local server
+  - url: https://bjitgroup.com
+    description: This is my company server
+
+schemes: [http, https]
+
+paths:
+  #Returns a User
+  /author/all:
+    get:
+      tags:
+        - Author
+      summary: Returns a list of authors.
+      description: People Who are already registered
+      responses:
+        200: # status code
+          description: Successul Response
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              email:
+                type: string
+              username:
+                type: string
+
+  # /author/signup:
+  #   post:
+  #     summary: Signing up a new author
+  #     requestBody:
+  #       $ref: "#/components/schemas/Author"
+
+  #signing up a author
+  /author/signup:
+    post:
+      tags:
+        - Author
+      summary: Adds a new Author
+
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SignupAuthor"
+      responses:
+        "201":
+          description: Created
+
+  /author/signin:
+    post:
+      tags:
+        - Author
+      summary: Author signin
+
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SigninAuthor"
+      responses:
+        "201":
+          description: Created
+
+  #returns array of question object
+  /question/questions-with-author:
+    get:
+      tags:
+        - Questions
+      summary: Returns a list of questions with author
+      description: questions that are active in status
+      responses:
+        200:
+          description: Successfull response
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+              description:
+                type: string
+              status:
+                type: string
+
+  #create a question
+  /question:
+    post:
+      tags:
+        - Questions
+      summary: Adds a new question
+
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Question"
+      responses:
+        "201":
+          description: Created
+
+components:
+  schemas:
+    Question:
+      type: object
+      required:
+        - title
+        - author
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        author:
+          type: string
+    SignupAuthor:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+        username:
+          type: string
+        password:
+          type: string
+    SigninAuthor:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+        password:
+          type: string
